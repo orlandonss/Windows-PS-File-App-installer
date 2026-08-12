@@ -12,6 +12,7 @@ This script uses **Winget** (Windows Package Manager) to automatically check, in
 * Microsoft Visual Studio Community
 * Discord
 * Steam
+* Git
 
 **What it does:** It checks if each application is already installed. If it is, it searches for and applies updates. If it is not found, it downloads and silently installs the latest version from the internet.
 
