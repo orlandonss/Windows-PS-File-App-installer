@@ -1,37 +1,38 @@
-Write-Host "A iniciar a verificação, instalação e atualização das aplicações..." -ForegroundColor Cyan
+Write-Host "Starting the verification, installation, and update of applications..." -ForegroundColor Cyan
 
-# Lista de aplicações a instalar via Winget
+# List of applications to install via Winget
 $wingetPackages = @(
     "Oracle.VirtualBox",
     "Mozilla.Firefox",
     "Microsoft.VisualStudioCode",
     "Microsoft.VisualStudio.Community",
     "Discord.Discord",
-    "Valve.Steam"
+    "Valve.Steam",
+    "Git.Git"
 )
 
-# Ciclo de instalação via Winget
+# Installation loop via Winget
 foreach ($pkg in $wingetPackages) {
     Write-Host "----------------------------------------"
-    Write-Host "A verificar: $pkg..." -ForegroundColor Yellow
+    Write-Host "Checking: $pkg..." -ForegroundColor Yellow
     
     $null = winget list --id $pkg --exact --accept-source-agreements 2>&1
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "-> $pkg já está instalado. A procurar e aplicar atualizações..." -ForegroundColor Blue
+        Write-Host "-> $pkg is already installed. Checking and applying updates..." -ForegroundColor Blue
         winget.exe upgrade --id $pkg --exact --accept-package-agreements --accept-source-agreements --silent
-        Write-Host "-> Verificação de atualização para $pkg concluída!" -ForegroundColor Green
+        Write-Host "-> Update check for $pkg completed!" -ForegroundColor Green
     } else {
-        Write-Host "-> $pkg não foi encontrado. A instalar a versão mais recente a partir da internet..." -ForegroundColor Magenta
+        Write-Host "-> $pkg was not found. Installing the latest version from the internet..." -ForegroundColor Magenta
         winget.exe install --id $pkg --exact --accept-package-agreements --accept-source-agreements --silent
         
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "-> Sucesso: $pkg foi instalado com sucesso!" -ForegroundColor Green
+            Write-Host "-> Success: $pkg was installed successfully!" -ForegroundColor Green
         } else {
-            Write-Host "-> Erro: Falha ao instalar $pkg. Verifica se o processo foi cancelado." -ForegroundColor Red
+            Write-Host "-> Error: Failed to install $pkg. Check if the process was canceled." -ForegroundColor Red
         }
     }
 }
 
 Write-Host "----------------------------------------"
-Write-Host "Todas as operações concluídas!" -ForegroundColor Cyan
+Write-Host "All operations completed!" -ForegroundColor Cyan
